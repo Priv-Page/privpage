@@ -1,0 +1,19 @@
+name: Windows CI
+
+on: [push]
+
+jobs:
+  linux-job:
+    runs-on: ubuntu-latest
+    container: crystallang/crystal:0.34.0-alpine
+    steps:
+      - name: Download source code
+        uses: actions/checkout@v2
+      - name: Format
+        run: "crystal tool format --check"
+      - name: Lint
+        run: "shards install; bin/ameba"
+      - name: Run tests
+        run: "crystal spec --warnings all --error-on-warnings"
+      - name: Build
+        run: "shards build"

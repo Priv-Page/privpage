@@ -1,0 +1,15 @@
+name: privpage
+version: 0.1.0
+
+authors:
+  - Julien Reichardt <contact@privpage.net>
+
+targets:
+  privpage:
+    main: src/privpage.cr
+
+development_dependencies:
+  ameba:
+    github: crystal-ameba/ameba
+
+license: ISC
