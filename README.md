@@ -7,11 +7,17 @@ Serves static sites from a `privpage` branch, using GitHub's OAuth2.
 
 The server is written in [Crystal](https://crystal-lang.org/)
 
+## Environment variables
+
+| variable             | value       |
+|----------------------|-------------|
+|GITHUB_OAUTH_SECRET_ID|**mandatory**|
+|GITHUB_OAUTH_CLIENT_ID|**mandatory**|
+|PORT                  | 3000        |
+
 ## Usage
 
-Set the environment variables
-- `GITHUB_OAUTH_SECRET_ID`
-- `GITHUB_OAUTH_CLIENT_ID`
+First, set the environment variables.
 
 For the test ones: `set -a; . ./.env-test; set +a`
 
