@@ -17,11 +17,13 @@ module PrivPage
     # For now only GitHub is supported
     first_subdomain_part, root_subdomain = UserRepository.split_first_subdomain_part context.request.host.to_s
     GitHub.handle_request first_subdomain_part, root_subdomain, context
+  rescue ex
+    context.response.respond_with_status(:internal_server_error)
+    ex.inspect_with_backtrace STDERR
   end
 
   def start(port : Int32)
     server = HTTP::Server.new [
-      HTTP::ErrorHandler.new,
       HTTP::LogHandler.new,
     ], &->proc(HTTP::Server::Context)
     address = server.bind_tcp port
