@@ -6,7 +6,6 @@ module PrivPage
   extend self
 
   def proc(context : HTTP::Server::Context) : Nil
-    context.response.headers["Content-Security-Policy"] = "default-src 'self'"
     # Enable cross-site filter (XSS) and tell browser to block detected attacks
     context.response.headers["X-XSS-Protection"] = "1; mode=block"
     # Prevent some browsers from MIME-sniffing a response away from the declared Content-Type
