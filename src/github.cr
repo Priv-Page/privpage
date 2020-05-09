@@ -8,9 +8,9 @@ require "./user_repository"
 module GitHub
   extend self
 
-  def handle_request(first_subdomain_part, root_subdomain, context : HTTP::Server::Context)
+  def handle_request(first_subdomain_part, root_domain, context : HTTP::Server::Context)
     if first_subdomain_part == "callback"
-      return handle_callback root_subdomain, context
+      return handle_callback root_domain, context
     end
     if user_repository = PrivPage::UserRepository.from_subdomain first_subdomain_part, context.response
       if session = Session.get_session?(context.request.cookies["github_session"]?.try &.value)
@@ -25,7 +25,7 @@ module GitHub
 
   # context.response.respond_with_status HTTP::Status::NOT_FOUND
 
-  def handle_callback(root_subdomain, context : HTTP::Server::Context)
+  def handle_callback(root_domain, context : HTTP::Server::Context)
     context.response.print context.request.host
     code : String? = nil
     state : OAuth::State? = nil
@@ -48,12 +48,12 @@ module GitHub
       Session.add state.random, token
       context.response.cookies << HTTP::Cookie.new(
         name: "github_session",
-        domain: root_subdomain,
+        domain: root_domain,
         value: state.random,
         http_only: true,
         secure: true,
       )
-      full_path = "http://#{state.user_repository_subdomain}#{root_subdomain}#{state.path}"
+      full_path = "http://#{state.user_repository_subdomain}#{root_domain}#{state.path}"
       redirect full_path, context.response
     end
   end

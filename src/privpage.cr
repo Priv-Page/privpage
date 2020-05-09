@@ -15,8 +15,8 @@ module PrivPage
     context.response.headers["X-Frame-Options"] = "DENY"
 
     # For now only GitHub is supported
-    first_subdomain_part, root_subdomain = UserRepository.split_first_subdomain_part context.request.host.to_s
-    GitHub.handle_request first_subdomain_part, root_subdomain, context
+    first_subdomain_part, root_domain = UserRepository.split_first_subdomain_part context.request.host.to_s
+    GitHub.handle_request first_subdomain_part, root_domain, context
   rescue ex
     context.response.respond_with_status(:internal_server_error)
     ex.inspect_with_backtrace STDERR
