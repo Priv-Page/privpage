@@ -36,7 +36,7 @@ module GitHub
         when "state"
           state = OAuth::State.from_string value
           # Invalid UserRepository - stop
-          return if !state
+          break if !state
         else
         end
       end
