@@ -23,10 +23,7 @@ module GitHub
     # The response should have already been sent at this point
   end
 
-  # context.response.respond_with_status HTTP::Status::NOT_FOUND
-
   def handle_callback(root_domain, context : HTTP::Server::Context)
-    context.response.print context.request.host
     code : String? = nil
     state : OAuth::State? = nil
     if request_query = context.request.query
