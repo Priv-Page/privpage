@@ -4,25 +4,60 @@ require "http/server/response"
 struct PrivPage::UserRepository
   getter user : String
   getter repository : String
+  getter base_branch : String?
   getter subdomain : String
+  # Delimiter between the user, repository and optionally, the branch.
+  class_property delimiter : String = "--"
+  # Base branch prefix to serve static pages.
+  class_property branch_prefix = "privpage"
 
-  def initialize(@subdomain : String, @user : String, @repository : String)
+  # Full Git branch to be served.
+  def full_branch : String
+    if base_branch = @base_branch
+      @@branch_prefix + '-' + base_branch
+    else
+      @@branch_prefix
+    end
+  end
+
+  def initialize(@subdomain : String, @user : String, @repository : String, @base_branch : String? = nil)
   end
 
   def self.from_subdomain(first_subdomain_part : String, response : HTTP::Server::Response) : UserRepository?
-    user, _, repo = first_subdomain_part.rpartition "--"
+    user = repository = branch = nil
+    index = 0
+    first_subdomain_part.split @@delimiter do |part|
+      if index > 2
+        response.status = HTTP::Status::BAD_REQUEST
+        response.print "Missing user part in the subdomain."
+        return
+      elsif part.empty?
+        response.status = HTTP::Status::FORBIDDEN
+        response.print "Delimiter character '#{@@delimiter}' is forbidden."
+        return
+      elsif part.includes? '.'
+        response.status = HTTP::Status::FORBIDDEN
+        response.print "Dot character ('.') is forbidden: '#{part}'."
+        return
+      else
+        case index
+        when 0 then user = part
+        when 1 then repository = part
+        when 2 then branch = part
+        else
+        end
+      end
+      index += 1
+    end
 
-    if user.empty? || repo.empty?
+    if !user
       response.status = HTTP::Status::BAD_REQUEST
-      response.print "Invalid user/repository: #{user}--#{repo}"
-    elsif user.includes?("--")
-      response.status = HTTP::Status::FORBIDDEN
-      response.print "User containing forbidden characters ('--'): #{user}"
-    elsif repo.includes?('.')
-      response.status = HTTP::Status::FORBIDDEN
-      response.print "Repository name cannot contain a dot ('.'): #{repo}"
+      response.print "Missing user part in the subdomain."
+    elsif !repository
+      response.status = HTTP::Status::BAD_REQUEST
+      response.print "Missing repository part in the subdomain."
     else
-      new first_subdomain_part, user, repo
+      new first_subdomain_part, user, repository, branch
     end
   end
 

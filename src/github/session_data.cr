@@ -45,7 +45,7 @@ struct GitHub::Session::Data
           end
         end
 
-        content_url = repo_url + "/contents#{path}?ref=privpage"
+        content_url = repo_url + "/contents#{path}?ref=#{user_repository.full_branch}"
         client_response = client.get content_url, headers: headers
         response.status = client_response.status
         response << client_response.body

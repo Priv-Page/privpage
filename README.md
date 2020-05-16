@@ -31,6 +31,7 @@ Execute
 
 Test:
 - https://priv-page--test.github.privpage.net
+- https://priv-page--test--latest.github.privpage.net
 - https://priv-page--test-crossload.github.privpage.net
 - https://priv-page--test-public.github.privpage.net
 
