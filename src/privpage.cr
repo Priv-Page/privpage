@@ -26,7 +26,7 @@ module PrivPage
       HTTP::LogHandler.new,
     ], &->proc(HTTP::Server::Context)
     address = server.bind_tcp port
-    puts "Listening on http://#{address}"
+    STDERR.puts "Listening on http://#{address}"
     server.listen
   end
 end

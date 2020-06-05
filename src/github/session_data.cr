@@ -1,12 +1,10 @@
 require "http/client"
 require "json"
 
-struct GitHub::Session::Data
+struct GitHub::SessionData
   getter token : String
-  getter time : Time
 
   def initialize(@token : String)
-    @time = Time.utc
   end
 
   # Gets the content of a path.

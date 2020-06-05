@@ -1,19 +1,23 @@
 require "http/client"
 
-require "./github/oauth"
-require "./github/session"
+require "./session"
 require "./user_repository"
+
+require "./github/oauth"
+require "./github/session_data"
 
 # https://developer.github.com/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps/
 module GitHub
   extend self
+  @@session = PrivPage::Session(SessionData).new
+  @@session.start_gc interval: 6.hour, max_period: 2.days
 
   def handle_request(first_subdomain_part, root_domain, context : HTTP::Server::Context)
     if first_subdomain_part == "callback"
       return handle_callback root_domain, context
     end
     if user_repository = PrivPage::UserRepository.from_subdomain first_subdomain_part, context.response
-      if session = Session.get_session?(context.request.cookies["github_session"]?.try &.value)
+      if session = @@session.get?(context.request.cookies["github_session"]?.try &.value)
         session.get_page user_repository, context.request.path, context.response
       else
         state = OAuth::State.new user_repository.subdomain, context.request.path
@@ -42,7 +46,7 @@ module GitHub
       context.response.respond_with_status HTTP::Status::BAD_REQUEST
     else
       token = state.get_access_token code
-      Session.add state.random, token
+      @@session.add state.random, SessionData.new(token)
       context.response.cookies << HTTP::Cookie.new(
         name: "github_session",
         domain: root_domain,
