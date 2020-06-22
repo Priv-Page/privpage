@@ -42,14 +42,14 @@ This is a high level explanation of how this project works.
 For more information of how GitHub OAuth works, see [the official documentation](https://developer.github.com/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps/).
 
 1. The client requests a resource
-- If the session cookie is present and valid, go to `3.`
+- If the session cookie is present and valid, go to `4.`
 - Otherwise, redirects to the provider's OAuth page
 
 2. Provider's (e.g. GitHub) OAuth page
 - If successful, redirects to the callback URL (this service)
 
-4. The callback request is received from the OAuth provider
+3. The callback request is received from the OAuth provider
 - Get an OAuth token, then store it server-side with a `random_key`
 - The `random_key` is set in a session cookie for the client
 
-5. A call is performed to the API to get the resource, which is then served to the client.
+4. A call is performed to the API to get the resource, which is then served to the client.
