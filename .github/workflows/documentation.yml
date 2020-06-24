@@ -2,8 +2,9 @@ name: Documentation
 
 on:
   push:
-    branches:
-      - master
+    # Remove '-ignore' to build for all branches
+    branches-ignore:
+      - '*'
 
 jobs:
   deploy:
@@ -20,10 +21,10 @@ jobs:
         run: |
           git config user.name CI
           git config user.email ""
-          git checkout -f --orphan gh-pages
+          git checkout -f --orphan privpage-${GITHUB_REF##*/}
           git rm --cached -rfq .
           git clean -fxdq
           mv /docs/* .
           git add .
           git commit -qm "Update docs"
-          git push -f --set-upstream origin gh-pages
+          git push -f --set-upstream origin privpage-${GITHUB_REF##*/}

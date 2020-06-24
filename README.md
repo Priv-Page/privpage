@@ -67,10 +67,6 @@ GitHub Pages allows to serve from a `/docs` directory, which is not supported by
 However, it is possible to create a branch which will have the files of the directory at the root.
 
 For a GitHub Actions example to how build a page site from a directory, [see this file](.github/workflows/documentation.yml).
-Of course, adapt for your needs: change `gh-pages` to `privpage`.
-
-Tips:
-- change `master` to `'*'` to build the documentation site for all branches.
-- use `privpage-${GITHUB_REF##*/}` to use branch prefixes, to have a separate documentation site for each branch.
+Of course, adapt it to your needs.
 
 For any question, add a comment to [the related issue](https://github.com/Priv-Page/privpage/issues/5), or ask to the [Gitter chat](https://gitter.im/Priv-Page/community).
