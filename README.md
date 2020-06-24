@@ -7,6 +7,12 @@ Serves static sites from a `privpage` branch, using GitHub's OAuth2.
 
 The server is written in [Crystal](https://crystal-lang.org/)
 
+## Features
+
+- Serve by default a `privpage` branch
+- Supports branch prefixes, `privpage-<MY_PREFIX>`
+- Do not serve public repositories (no need)
+
 ## Environment variables
 
 | variable             | value       |
@@ -53,3 +59,18 @@ For more information of how GitHub OAuth works, see [the official documentation]
 - The `random_key` is set in a session cookie for the client
 
 4. A call is performed to the API to get the resource, which is then served to the client.
+
+## Serving from a documentation directory
+
+GitHub Pages allows to serve from a `/docs` directory, which is not supported by PrivPage.
+
+However, it is possible to create a branch which will have the files of the directory at the root.
+
+For a GitHub Actions example to how build a page site from a directory, [see this file](.github/workflows/documentation.yml).
+Of course, adapt for your needs: change `gh-pages` to `privpage`.
+
+Tips:
+- change `master` to `'*'` to build the documentation site for all branches.
+- use `privpage-${GITHUB_REF##*/}` to use branch prefixes, to have a separate documentation site for each branch.
+
+For any question, add a comment to [the related issue](https://github.com/Priv-Page/privpage/issues/5), or ask to the [Gitter chat](https://gitter.im/Priv-Page/community).
