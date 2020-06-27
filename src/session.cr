@@ -1,7 +1,9 @@
+require "log"
 require "oauth2"
 
 struct PrivPage::Session(T)
-  def initialize(@log : IO = STDERR)
+  def initialize(io : IO = STDERR)
+    @log = Log.new("session", Log::IOBackend.new(io), :info)
   end
 
   # Sessions with its data.
@@ -25,14 +27,12 @@ struct PrivPage::Session(T)
         sleep interval
         time = Time.utc
         max_time = time - max_period
-        @log << time
-        @log.puts " Cleaning all sessions older than #{max_time}..."
+        @log.info { "#{time} Cleaning all sessions older than #{max_time}..." }
         initial_size = size
         @store.reject! do |_, d|
           d.first < max_time
         end
-        @log << Time.utc
-        @log.puts " #{initial_size - size} objects removed on #{initial_size} objects presents."
+        @log.info { "#{Time.utc} #{initial_size - size} objects removed on #{initial_size} objects presents." }
       end
     end
   end

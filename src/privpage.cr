@@ -1,4 +1,5 @@
 require "http/server"
+require "log"
 require "./user_repository"
 require "./github"
 
@@ -26,7 +27,8 @@ module PrivPage
       HTTP::LogHandler.new,
     ], &->proc(HTTP::Server::Context)
     address = server.bind_tcp port
-    STDERR.puts "Listening on http://#{address}"
+    log = Log.new("server", Log::IOBackend.new(STDERR), :info)
+    log.info { "Listening on http://#{address}" }
     server.listen
   end
 end
