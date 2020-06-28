@@ -6,6 +6,8 @@ require "./github"
 module PrivPage
   extend self
 
+  @@log = Log.new("server", Log::IOBackend.new(STDERR), :info)
+
   def proc(context : HTTP::Server::Context) : Nil
     # Enable cross-site filter (XSS) and tell browser to block detected attacks
     context.response.headers["X-XSS-Protection"] = "1; mode=block"
@@ -19,7 +21,7 @@ module PrivPage
     GitHub.handle_request first_subdomain_part, root_domain, context
   rescue ex
     context.response.respond_with_status(:internal_server_error)
-    ex.inspect_with_backtrace STDERR
+    @@log.warn(exception: ex) { }
   end
 
   def start(port : Int32)
@@ -27,8 +29,7 @@ module PrivPage
       HTTP::LogHandler.new,
     ], &->proc(HTTP::Server::Context)
     address = server.bind_tcp port
-    log = Log.new("server", Log::IOBackend.new(STDERR), :info)
-    log.info { "Listening on http://#{address}" }
+    @@log.info { "Listening on http://#{address}" }
     server.listen
   end
 end
