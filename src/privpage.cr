@@ -14,7 +14,8 @@ module PrivPage
     # Prevent some browsers from MIME-sniffing a response away from the declared Content-Type
     context.response.headers["X-Content-Type-Options"] = "nosniff"
     # Disallow the site to be rendered within a frame (clickjacking protection)
-    context.response.headers["X-Frame-Options"] = "DENY"
+    context.response.headers["X-Frame-Options"] = "sameorigin"
+    context.response.headers["Content-Security-Policy"] = "frame-ancestors 'self';"
 
     # For now only GitHub is supported
     first_subdomain_part, root_domain = UserRepository.split_first_subdomain_part context.request.host.to_s
