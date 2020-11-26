@@ -1,5 +1,4 @@
 require "log"
-require "oauth2"
 
 struct PrivPage::Session(T)
   def initialize(io : IO = STDERR)
