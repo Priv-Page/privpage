@@ -22,7 +22,7 @@ module PrivPage
     GitHub.handle_request first_subdomain_part, root_domain, context
   rescue ex
     context.response.respond_with_status(:internal_server_error)
-    @@log.warn(exception: ex) { }
+    @@log.error(exception: ex) { }
   end
 
   def start(port : Int32)

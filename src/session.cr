@@ -31,7 +31,7 @@ struct PrivPage::Session(T)
         @store.reject! do |_, d|
           d.first < max_time
         end
-        @log.info { "#{Time.utc} #{initial_size - size} objects removed on #{initial_size} objects presents." }
+        @log.info { "#{initial_size - size} objects removed on #{initial_size} objects presents." }
       end
     end
   end

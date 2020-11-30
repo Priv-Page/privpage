@@ -48,7 +48,7 @@ module GitHub::OAuth
 
     def value : String
       # '=' is never in used a urlsafe_base64
-      @random + '=' + user_repository_subdomain + '/' + @path
+      "#{@random}=#{user_repository_subdomain}/#{@path}"
     end
 
     def self.from_string(str : String)
