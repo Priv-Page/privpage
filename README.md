@@ -69,3 +69,7 @@ For a GitHub Actions example to how build a page site from a directory, [see thi
 Of course, adapt it to your needs.
 
 For any question, add a comment to [the related issue](https://github.com/Priv-Page/privpage/issues/5), or ask to the [Gitter chat](https://gitter.im/Priv-Page/community).
+
+## License
+
+Copyright (c) 2020-2021 Julien Reichardt - ISC License
