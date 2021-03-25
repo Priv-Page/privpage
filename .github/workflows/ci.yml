@@ -5,7 +5,7 @@ on: [push]
 jobs:
   linux-job:
     runs-on: ubuntu-latest
-    container: crystallang/crystal:0.34.0-alpine
+    container: crystallang/crystal:latest-alpine
     steps:
       - name: Download source code
         uses: actions/checkout@v2
