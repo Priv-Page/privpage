@@ -24,7 +24,7 @@ module PrivPage
     GitHub.handle_request first_subdomain_part, root_domain, context
 
     # log the domain along with the path
-    context.request.path = host + context.request.path.lchop '/'
+    context.request.path = "#{host}/#{context.request.path.lchop '/'}"
   rescue ex
     context.response.respond_with_status(:internal_server_error)
     @@log.error(exception: ex) { }
