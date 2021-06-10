@@ -1,6 +1,5 @@
 # PrivPage
 
-[![Gitter](https://img.shields.io/badge/chat-on_gitter-red.svg?style=flat-square)](https://gitter.im/Priv-Page/community)
 [![ISC](https://img.shields.io/badge/License-ISC-blue.svg?style=flat-square)](https://en.wikipedia.org/wiki/ISC_license)
 
 Serves static sites from a `privpage` branch, using GitHub's OAuth2.
